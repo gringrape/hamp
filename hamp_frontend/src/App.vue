@@ -1,18 +1,30 @@
 <template>
   <div id="app">
-    <nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
-      <div class="flex items-center flex-shrink-0 text-green-500 mr-6">
-        <span class="font-semibold text-2xl tracking-tight">hamp</span>
+    <nav 
+      class="bg-green-600 p-8 shadow-xl flex items-center justify-between">
+      <div 
+        class="font-semibold text-gray-200 text-3xl tracking-wider flex items-center">
+        <a href="#">
+          Hamp
+        </a>
       </div>
-      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div class="text-xl lg:flex-grow">
-          <a href="" class="text-green-500 ml-6">List</a>
-          <a href="" class="text-green-500 ml-6">Docs</a>
-          <a href="" class="text-green-500 ml-6">Forum</a>
-        </div>
+      <div class="flex text-gray-100 text-xl tracking-wide mr-6">
+        <a href="" class="ml-6 hover:text-gray-700">
+            List
+        </a>
+        <router-link to="/signUp" class="ml-6 hover:text-gray-700">
+            Sign Up
+        </router-link>
+        <router-link to="/login" class="ml-6 hover:text-gray-700">
+            Login
+        </router-link>
       </div>
     </nav>
-    <router-view/>
+    <div class="bg-gray-200 h-auto pb-32 pt-10">
+      <router-view/>
+      <router-view name="category" class="ml-20"/> 
+      <router-view name="list" class="mt-10 ml-20"/> 
+    </div>
   </div>
 </template>
 
@@ -23,18 +35,5 @@ export default {
 </script>
 
 <style>
-@tailwind base;
-
-@tailwind components;
-
-@tailwind utilities;
-
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import "../import.css"
 </style>

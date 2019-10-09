@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:h2:~/data/hamp
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+---
+jwt:
+  secret: IknowwhatyoudidinlastsummerandwinterYouKnowThat
