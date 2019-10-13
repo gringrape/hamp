@@ -1,39 +1,71 @@
 <template>
-  <div id="app">
+  <div id="app" class="mother">
     <nav 
       class="bg-green-600 p-8 shadow-xl flex items-center justify-between">
       <div 
         class="font-semibold text-gray-200 text-3xl tracking-wider flex items-center">
-        <a href="#">
+        <a href="">
           Hamp
         </a>
       </div>
       <div class="flex text-gray-100 text-xl tracking-wide mr-6">
-        <a href="" class="ml-6 hover:text-gray-700">
+        <router-link to="/" class="ml-6 hover:text-gray-700">
             List
-        </a>
-        <router-link to="/signUp" class="ml-6 hover:text-gray-700">
+        </router-link>
+        <router-link v-if="!isLogined" to="/signUp" class="ml-6 hover:text-gray-700">
             Sign Up
         </router-link>
-        <router-link to="/login" class="ml-6 hover:text-gray-700">
+        <router-link v-if="!isLogined" to="/login" class="ml-6 hover:text-gray-700">
             Login
         </router-link>
+        <router-link v-if="isLogined" to="/host" class="ml-6 hover:text-gray-700">
+            Host
+        </router-link>
+        <a href="" @click="logout" v-if="isLogined" class="ml-6 hover:text-gray-700">
+            Log out
+        </a>
       </div>
     </nav>
-    <div class="bg-gray-200 h-auto pb-32 pt-10">
+    <div class="bg-gray-100 h-screen pb-32 pt-10">
       <router-view/>
       <router-view name="category" class="ml-20"/> 
-      <router-view name="list" class="mt-10 ml-20"/> 
+      <router-view name="list" class="mt-10 ml-20"/>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      token: ''
+    }
+  },
+  created() {
+    this.token = window.localStorage.getItem('accesstoken');
+  },
+  computed: {
+    isLogined() {
+      if(this.token != null) {
+        return true
+      }
+      return false
+    }
+  },
+  methods: {
+    logout() {
+      window.localStorage.removeItem('accesstoken');
+    }
+  }
 }
 </script>
 
 <style>
-  @import "../import.css"
+  @import 'vue-datetime/dist/vue-datetime.css';
+  @import "../import.css";
+  @import url('https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap');
+  .mother {
+    font-family: 'Nanum Gothic', sans-serif;
+  }
 </style>

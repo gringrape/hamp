@@ -49,28 +49,29 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { RepositoryFactory } from '../../repositories/RepositoryFactory'
+const MeetingsRepository = RepositoryFactory.get('meetings')
 
 export default {
   name: 'List',
   data () {
     return {
-      list: [],
-      msg: 'Welcome to Your Vue.js App',
-      router: this.$router
+      list: []
     }
   },
-  mounted() {
-    this.axiosGETList()
+  created() {
+    this.fetch()
   },
   methods: {
-    goDetail: function(meetingId) {
-      this.$router.push({name: 'Detail', params: { id: meetingId}});
+    async fetch() {
+      const { data } = await MeetingsRepository.get();
+      this.list = data;
     },
-    axiosGETList: function(){
-      axios.get('http://localhost:8080/meetings')
-      .then(response => this.list = response.data)
-      console.log("전송했어요~")
+    goDetail: function(meetingId) {
+      var router = this.$router
+      router.push(
+        {name: 'Detail', 
+         params: {id: meetingId}});
     }
   }
 }

@@ -50,7 +50,6 @@ public class MeetingControllerTests {
                 .title("함께 C언어 공부해요~!")
                 .description("초보자도 쉽게 할 수 있어요~!")
                 .meetDate("2001-12-23 11:23:38")
-                .noAppliers(1)
                 .build();
 
         meetings.add(meeting);
@@ -204,6 +203,14 @@ public class MeetingControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"topicId\":\"\", \"title\":\"C 언어를 함께 공부합시다~\", \"description\":\"C 언어를 함께 공부하는 모임이에요~ 오셔서 구경해보세요~\"}"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void applyingMeeting() throws Exception {
+
+        mvc.perform(patch("/meetings?isApplying=true"))
+                .andExpect(status().isOk());
+
     }
 
     @Test

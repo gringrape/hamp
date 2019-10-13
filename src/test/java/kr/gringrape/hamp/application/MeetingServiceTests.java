@@ -167,7 +167,6 @@ public class MeetingServiceTests {
 
     private void assertInitialized(Meeting meeting) {
         assertNotNull(meeting.getMeetDate());
-        assertThat(meeting.getNoAppliers(), is(1));
     }
 
     @Test

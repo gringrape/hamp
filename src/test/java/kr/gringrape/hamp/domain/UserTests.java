@@ -47,5 +47,4 @@ public class UserTests {
 
         assertThat(user.isActive(), is(false));
     }
-
 }

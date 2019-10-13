@@ -6,8 +6,10 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Builder
@@ -30,6 +32,9 @@ public class User {
     private String password;
 
     private Integer level;
+
+    @ManyToMany(mappedBy = "applyingUsers")
+    private List<Meeting> appliedMeetings;
 
     public boolean isAdmin() {
 

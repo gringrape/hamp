@@ -12,7 +12,7 @@
     <div class="title flex">
       <div v-for="topic in topics" :key="topic['id']">
         <div class="topic-image-container">
-          <img src="../assets/JavaLogo.png">
+          <img src="../../assets/JavaLogo.png">
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@ import axios from 'axios';
 export default {
   name: 'Category',
   data() {
-    const imageLocation = '../assets/'
+    const imageLocation = ''
     return {
       topics: [] // get from backend
     }

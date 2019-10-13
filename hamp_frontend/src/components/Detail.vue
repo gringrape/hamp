@@ -50,42 +50,33 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { RepositoryFactory } from '../repositories/RepositoryFactory'
+const MeetingsRepository = RepositoryFactory.get('meetings')
 
 export default {
   name: 'Detail',
   data() {
     return {
-      meetingId: '',
-      meeting: {}
+      meeting: {},
+      meetingId: ''
     }
   },
-  mounted() {
-  
-    var meetingId = this.$route.params['id'] 
-
-    this.meetingId = meetingId
-
-    axios.get("http://localhost:8080/meetings/" + meetingId)
-    .then(response => this.meeting = response.data)
-  
+  created() {
+    this.meetingId = this.$route.params['id'];
+    this.fetch();
   },
   methods: {
-    deleteThis: function() {
-      
-      axios.delete("http://localhost:8080/meetings/" + this.meetingId)
-
-      this.waitThenGoList();
+    async fetch() {  
+      const { data } = await MeetingsRepository.getMeeting(this.meetingId);
+      this.meeting = data; 
     },
-    goList: function() {
-
-      this.$router.push({path: '/'});
-    
+    async deleteThis() {
+      let result = await MeetingsRepository.deleteMeeting(this.meetingId);      
     },
-    waitThenGoList: function() {
+    goList() {
+      var router = this.$router
 
-      setTimeout(() => this.goList(), 100);
-    
+      router.push({path: '/'});
     }
   }
 }

@@ -4,12 +4,16 @@ import kr.gringrape.hamp.application.MeetingService;
 import kr.gringrape.hamp.domain.Meeting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,12 +60,21 @@ public class MeetingController {
 
     @PatchMapping("/meetings/{id}")
     public String modify(
+            Principal principal,
             @PathVariable("id") Long id,
-            @Valid @RequestBody Meeting resource
+            @Valid @RequestBody Meeting resource,
+            @RequestParam(name = "apply", required = false) Optional<String> isApplying
     ) {
 
-        meetingService.modifyMeeting(id, resource);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        auth.
+
+        if(isApplying.isPresent()) {
+            meetingService.addUserToMeeting(id, resource, principal.getName())
+        }
+
+        meetingService.modifyMeeting(id, resource);
         return "{}";
     }
 
