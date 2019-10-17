@@ -1,4 +1,4 @@
-package kr.gringrape.hamp.interfaces;
+package kr.gringrape.hamp.interfaces.dto;
 
 import lombok.Data;
 

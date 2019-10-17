@@ -9,6 +9,8 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +26,9 @@ public class Meeting {
     @GeneratedValue
     private Long id;
 
-    private String meetDate;
+    private LocalDateTime startDate;
+
+    private LocalDateTime endDate;
 
     @NotEmpty
     private String address;
@@ -42,12 +46,7 @@ public class Meeting {
     private List<User> applyingUsers;
 
     public void initialize() {
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date(System.currentTimeMillis());
-
-        this.meetDate = formatter.format(date);
-
+        applyingUsers = new ArrayList<>();
     }
 
     public boolean addUser(User user) {

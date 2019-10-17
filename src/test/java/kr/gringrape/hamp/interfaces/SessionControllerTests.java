@@ -57,10 +57,7 @@ public class SessionControllerTests {
                 .content("{\"email\":\"tester@gmail.com\",\"password\":\"test\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location","/session"))
-                .andExpect(cookie().exists("accessToken"))
-                .andExpect(cookie()
-                        .value("accessToken", containsString("header.payload.signature")))
-                .andExpect(cookie().httpOnly("accessToken", true));
+                .andExpect(header().string("accessToken", "header.payload.signature"));
 
         verify(userService)
                 .authenticate(eq("tester@gmail.com"), eq("test"));

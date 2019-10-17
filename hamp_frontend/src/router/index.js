@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import List from '@/components/main/List'
-import Category from '@/components/main/Category'
+import SearchBar from '@/components/main/SearchBar'
 import Detail from '@/components/Detail'
 import SignUpForm from '@/components/SignUpForm'
 import LoginForm from '@/components/LoginForm'
@@ -15,11 +15,11 @@ export default new Router({
       path: '/',
       components: {
         list: List,
-        category: Category
+        searchbar: SearchBar
       }
     },
     {
-      path: '/meetings/:id',
+      path: '/meetings/',
       name: 'Detail',
       component: Detail
     },

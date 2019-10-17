@@ -15,13 +15,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,7 +49,6 @@ public class MeetingControllerTests {
                 .topicId(1L)
                 .title("함께 C언어 공부해요~!")
                 .description("초보자도 쉽게 할 수 있어요~!")
-                .meetDate("2001-12-23 11:23:38")
                 .build();
 
         meetings.add(meeting);
@@ -57,72 +56,18 @@ public class MeetingControllerTests {
 
     @Test
     public void list() throws Exception {
-        given(meetingService.getMeetings("", null))
+        given(meetingService.getMeetings(
+                any(), any(), any(), any(), any()
+        ))
                 .willReturn(meetings);
 
         mvc.perform(get("/meetings"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"topicId\":1")));
 
-        verify(meetingService).getMeetings("", null);
-    }
-
-    @Test
-    public void listFilteredByRegion() throws Exception {
-        List<Meeting> meetings = new ArrayList<>();
-
-        meetings.add(Meeting.builder()
-                    .title("서울 개발 모임")
-                    .build());
-
-        given(meetingService.getMeetings(eq("서울"), eq(null)))
-                .willReturn(meetings);
-
-        mvc.perform(get("/meetings?address=서울"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"title\":\"서울 개발 모임\"")));
-
-        verify(meetingService).getMeetings(eq("서울"), eq(null));
-    }
-
-    @Test
-    public void listFilteredByTopic() throws Exception {
-
-        List<Meeting> meetings = new ArrayList<>();
-
-        meetings.add(Meeting.builder()
-                .title("서울 개발 모임")
-                .build());
-
-        given(meetingService.getMeetings("", 1L))
-                .willReturn(meetings);
-
-        mvc.perform(get("/meetings?topic=1"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"title\":\"서울 개발 모임\"")));
-
-        verify(meetingService).getMeetings(eq(""), eq(1L));
-
-    }
-
-    @Test
-    public void listFilteredByRegionAndTopic() throws Exception {
-
-        List<Meeting> meetings = new ArrayList<>();
-
-        meetings.add(Meeting.builder()
-                .title("서울 개발 모임")
-                .build());
-
-        given(meetingService.getMeetings(eq("서울"), eq(1L)))
-                .willReturn(meetings);
-
-        mvc.perform(get("/meetings?address=서울&topic=1"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"title\":\"서울 개발 모임\"")));
-
-        verify(meetingService).getMeetings(eq("서울"),eq(1L));
-
+        verify(meetingService).getMeetings(
+                any(), any(), any(), any(), any()
+        );
     }
 
     @Test
@@ -203,14 +148,6 @@ public class MeetingControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"topicId\":\"\", \"title\":\"C 언어를 함께 공부합시다~\", \"description\":\"C 언어를 함께 공부하는 모임이에요~ 오셔서 구경해보세요~\"}"))
                 .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void applyingMeeting() throws Exception {
-
-        mvc.perform(patch("/meetings?isApplying=true"))
-                .andExpect(status().isOk());
-
     }
 
     @Test

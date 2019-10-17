@@ -11,6 +11,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     User save(User resource);
 
+    Optional<User> findById(Long userId);
+
     Optional<User> findByEmail(String email);
 
+    List<User> findAllByAppliedMeetings(Meeting meeting);
 }

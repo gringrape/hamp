@@ -20,7 +20,9 @@
     "vue-daum-postcode": "^0.7.0",
     "vue-router": "^3.0.1",
     "vue2-editor": "^2.10.2",
+    "vue2-location-picker": "^1.2.0",
     "vuejs-daum-postcode": "^1.0.4",
+    "vuex": "^3.1.1",
     "weekstart": "^1.0.0"
   },
   "devDependencies": {

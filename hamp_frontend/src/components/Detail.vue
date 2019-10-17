@@ -52,31 +52,53 @@
 <script>
 import { RepositoryFactory } from '../repositories/RepositoryFactory'
 const MeetingsRepository = RepositoryFactory.get('meetings')
+const store = this.$store
 
 export default {
   name: 'Detail',
   data() {
     return {
-      meeting: {},
-      meetingId: ''
+      meeting: {}
     }
   },
+  //
+  methods: {
+    search() {
+      this.$http.get("")
+      .then((result) => 
+        console.log(result)
+      )
+    }
+  },
+  //
   created() {
-    this.meetingId = this.$route.params['id'];
     this.fetch();
+  },
+  computed: {
+    meetingId() {
+      const store = this.$store
+      return store.getters.meetingId;
+    }
   },
   methods: {
     async fetch() {  
-      const { data } = await MeetingsRepository.getMeeting(this.meetingId);
+      const { data } = await MeetingsRepository.getMeeting(this.meetingId)
+        .catch((error) => this.meetingNotFoundErrorHandler());
       this.meeting = data; 
     },
     async deleteThis() {
       let result = await MeetingsRepository.deleteMeeting(this.meetingId);      
     },
     goList() {
-      var router = this.$router
+      const router = this.$router
 
       router.push({path: '/'});
+    },
+    meetingNotFoundErrorHandler() {
+      const router = this.$router
+      console.log("오류가 발생하였습니다.")
+      
+      router.push({path: "/"});
     }
   }
 }

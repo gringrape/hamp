@@ -2,12 +2,10 @@ package kr.gringrape.hamp.interfaces;
 
 import kr.gringrape.hamp.application.UserService;
 import kr.gringrape.hamp.domain.User;
+import kr.gringrape.hamp.interfaces.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,6 +16,24 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping("/users/{userId}")
+    public UserDto detail(
+            @PathVariable Long userId
+    ) {
+
+        User user = userService.getUser(userId);
+
+        UserDto userDto = UserDto.builder()
+                .nick(user.getNick())
+                .email(user.getEmail())
+                .level(user.getLevel())
+                .appliedMeetings(user.getAppliedMeetings())
+                .build();
+
+        return userDto;
+
+    }
 
     @PostMapping("/users")
     public ResponseEntity<?> create(

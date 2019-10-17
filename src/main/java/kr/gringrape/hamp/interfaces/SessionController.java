@@ -2,6 +2,8 @@ package kr.gringrape.hamp.interfaces;
 
 import kr.gringrape.hamp.application.UserService;
 import kr.gringrape.hamp.domain.User;
+import kr.gringrape.hamp.interfaces.dto.SessionRequestDto;
+import kr.gringrape.hamp.interfaces.dto.SessionResponseDto;
 import kr.gringrape.hamp.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;

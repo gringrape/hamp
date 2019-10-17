@@ -1,21 +1,20 @@
 <template>
-  <div class="List">
+  <div class="List mx-auto w-268 mt-20 p-2">
     <div class="flex justify-between">
-      <h1 
-        class="text-gray-900 font-semibold tracking-wider">
+      <h1 class="text-gray-900 font-semibold tracking-wider">
           현재 진행되는 모임들
       </h1>
       <h1>
-        <a href="" class="mr-64 text-blue-700">모두보기</a>
+        <a href="" class="text-blue-700">모두보기</a>
       </h1>
     </div>
     <p 
       class="mt-1 text-sm text-gray-700">
         관심있는 모임의 목록을 확인해보세요
     </p>
-    <div class="mt-2 flex">
+    <div v-for="tray in box" class="mt-6 flex">
       <div 
-        v-for="meeting in list" 
+        v-for="meeting in tray" 
         class="w-64 shadow-xl p-2 rounded-lg leading-normal mx-2" 
         @click="">
         <h4 
@@ -45,6 +44,17 @@
         </div>
       </div>
     </div>
+    <div class="pageBar absolute flex mt-10 mx-120">
+      <button class="mr-2 bg-gray-600 text-gray-200 font-bold p-1 rounded">
+        <
+      </button>
+      <button v-for="number in pages" class="mr-2 bg-gray-600 text-gray-200 font-bold p-1 rounded">
+        {{ number }}
+      </button>
+      <button class="mr-2 bg-gray-600 text-gray-200 font-bold p-1 rounded">
+        >
+      </button>
+    </div>
   </div>
 </template>
 
@@ -56,7 +66,9 @@ export default {
   name: 'List',
   data () {
     return {
-      list: []
+      list: [],
+      box: [],
+      pages: 3
     }
   },
   created() {
@@ -66,12 +78,27 @@ export default {
     async fetch() {
       const { data } = await MeetingsRepository.get();
       this.list = data;
+      this.putInBox();
     },
-    goDetail: function(meetingId) {
-      var router = this.$router
-      router.push(
-        {name: 'Detail', 
-         params: {id: meetingId}});
+    goDetail(meetingId) {
+      const router = this.$router
+      const store = this.$store
+
+      store.commit('setMeeting', meetingId);
+      router.push({name: 'Detail'});
+    },
+    putInBox() {
+      var tray = []
+      var box = this.box
+      var meeting 
+      for(meeting of this.list) {
+        if(tray.length == 4) {
+          box.push(tray)
+          tray = []
+        }
+        tray.push(meeting)
+      }
+      box.push(tray)
     }
   }
 }

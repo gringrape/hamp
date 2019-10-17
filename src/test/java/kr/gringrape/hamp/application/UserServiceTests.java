@@ -69,6 +69,32 @@ public class UserServiceTests {
     }
 
     @Test
+    public void getUserWithValidId() {
+
+        User mockUser = User.builder().id(1004L).build();
+
+        given(userRepository.findById(1004L))
+                .willReturn(Optional.ofNullable(mockUser));
+
+        User user = userService.getUser(1004L);
+
+        verify(userRepository).findById(eq(1004L));
+
+        assertThat(user.getId()).isEqualTo(1004L);
+
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void getUserWithInvalidId() {
+
+        given(userRepository.findById(404L))
+                .willReturn(Optional.empty());
+
+        User user = userService.getUser(404L);
+
+    }
+
+    @Test
     public void addUser() {
 
         String email = "tester@gmail.com";

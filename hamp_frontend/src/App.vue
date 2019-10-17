@@ -1,7 +1,6 @@
 <template>
   <div id="app" class="mother">
-    <nav 
-      class="bg-green-600 p-8 shadow-xl flex items-center justify-between">
+    <nav class="bg-green-600 p-8 shadow-xl flex items-center justify-between">
       <div 
         class="font-semibold text-gray-200 text-3xl tracking-wider flex items-center">
         <a href="">
@@ -28,13 +27,14 @@
     </nav>
     <div class="bg-gray-100 h-screen pb-32 pt-10">
       <router-view/>
-      <router-view name="category" class="ml-20"/> 
-      <router-view name="list" class="mt-10 ml-20"/>
+      <router-view name="searchbar"/> 
+      <router-view name="list"/>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'App',
   data() {
@@ -65,6 +65,7 @@ export default {
   @import 'vue-datetime/dist/vue-datetime.css';
   @import "../import.css";
   @import url('https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap');
+  @import url("https://fonts.googleapis.com/icon?family=Material+Icons"); 
   .mother {
     font-family: 'Nanum Gothic', sans-serif;
   }
