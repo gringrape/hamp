@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920.5" height="253.026" viewBox="0 0 1920.5 253.026">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #3490c5;
+        stroke: #707070;
+      }
+
+      .cls-2 {
+        fill: #fff;
+        stroke: #3490c5;
+      }
+
+      .cls-3, .cls-4 {
+        fill: #f7f152;
+      }
+
+      .cls-3 {
+        opacity: 0.89;
+      }
+
+      .cls-4 {
+        opacity: 0.63;
+      }
+
+      .cls-5 {
+        stroke: none;
+      }
+
+      .cls-6 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="구성_요소_2_1" data-name="구성 요소 2 – 1" transform="translate(0.5 0.526)">
+    <g id="사각형_1" data-name="사각형 1" class="cls-1">
+      <rect class="cls-5" width="1920" height="252"/>
+      <rect class="cls-6" x="0.5" y="0.5" width="1919" height="251"/>
+    </g>
+    <g id="구성_요소_1_1" data-name="구성 요소 1 – 1" transform="translate(0)">
+      <path id="패스_2" data-name="패스 2" class="cls-2" d="M1225.151,144s-78.544-24.964-132.458-35.087c-46.421-8.716-144.651,3.26-146.51-58.219C942.15-82.667,441-108,441-108V144Z" transform="translate(-441 108)"/>
+    </g>
+    <ellipse id="타원_1" data-name="타원 1" class="cls-3" cx="53" cy="52" rx="53" ry="52" transform="translate(881 22)"/>
+    <ellipse id="타원_4" data-name="타원 4" class="cls-4" cx="57.5" cy="3" rx="57.5" ry="3" transform="matrix(0.914, -0.407, 0.407, 0.914, 751.359, 155.213)"/>
+    <ellipse id="타원_5" data-name="타원 5" class="cls-4" cx="79" cy="5" rx="79" ry="5" transform="translate(701.521 39.164) rotate(4)"/>
+    <ellipse id="타원_6" data-name="타원 6" class="cls-4" cx="28" cy="3" rx="28" ry="3" transform="matrix(-0.242, 0.97, -0.97, -0.242, 926.14, 143.201)"/>
+    <ellipse id="타원_7" data-name="타원 7" class="cls-4" cx="97.5" cy="4.5" rx="97.5" ry="4.5" transform="translate(1211.239 92.147) rotate(-173)"/>
+    <ellipse id="타원_8" data-name="타원 8" class="cls-4" cx="51.5" cy="3.5" rx="51.5" ry="3.5" transform="matrix(-0.883, -0.469, 0.469, -0.883, 1087.308, 169.468)"/>
+  </g>
+</svg>

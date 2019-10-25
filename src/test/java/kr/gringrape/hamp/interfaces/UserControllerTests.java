@@ -13,11 +13,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -66,6 +66,23 @@ public class UserControllerTests {
                 .andExpect(header().string("location","/users/1004"));
 
         verify(userService).registerUser(email, nick, password);
+
+    }
+
+    @Test
+    public void modify() throws Exception {
+
+        mvc.perform(patch("/users/1004")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"gringrape200@naver.com\",\"nick\":\"ccc\",\"password\":\"135531\"}"))
+                .andExpect(status().isOk());
+
+        verify(userService).updateUser(
+                eq(1004L),
+                eq("gringrape200@naver.com"),
+                any(),
+                eq("ccc")
+        );
 
     }
 

@@ -1,11 +1,10 @@
 package kr.gringrape.hamp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Target;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
@@ -26,12 +25,18 @@ public class Meeting {
     @GeneratedValue
     private Long id;
 
+    @OneToOne
+    private User writer;
+
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
 
-    @NotEmpty
     private String address;
+
+    private Double latitude;
+
+    private Double longitude;
 
     @NotNull
     private Long topicId;
@@ -42,6 +47,7 @@ public class Meeting {
     @NotEmpty
     private String description;
 
+    @JsonIgnore
     @ManyToMany
     private List<User> applyingUsers;
 

@@ -1,11 +1,8 @@
 <template>
-  <div class="List mx-auto w-268 mt-20 p-2">
+  <div class="List mx-auto w-280 mt-20 p-2">
     <div class="flex justify-between">
       <h1 class="text-gray-900 font-semibold tracking-wider">
           현재 진행되는 모임들
-      </h1>
-      <h1>
-        <a href="" class="text-blue-700">모두보기</a>
       </h1>
     </div>
     <p 
@@ -15,7 +12,7 @@
     <div v-for="tray in box" class="mt-6 flex">
       <div 
         v-for="meeting in tray" 
-        class="w-64 shadow-xl p-2 rounded-lg leading-normal mx-2" 
+        class="w-64 shadow-md p-2 rounded-lg leading-normal mx-2 bg-white truncate" 
         @click="">
         <h4 
           class="text-indigo-600 text-xs">
@@ -32,53 +29,68 @@
         <div 
           class="flex mt-5 justify-between">
           <h4 
-            class="text-xs">
-              참석인원 {{ meeting['noAppliers'] }} 명
+            class="text-xs"
+            >
+              참석인원 {{ attendees[meeting['id']] }} 명
           </h4>
           <a 
             href="#" 
-            class="bg-purple-600 hover:bg-purple-400 text-gray-200 px-4 py-2 rounded-lg text-xs mr-2 tracking-wider" 
+            class=" bg-summer-sea-4 hover:bg-blue-900 text-gray-200 font-bold px-4 py-2 rounded-lg text-xs mr-2 tracking-wider" 
             @click="goDetail(meeting['id'])">
-              참여하기
+              자세히 보기
           </a>
         </div>
       </div>
     </div>
     <div class="pageBar absolute flex mt-10 mx-120">
-      <button class="mr-2 bg-gray-600 text-gray-200 font-bold p-1 rounded">
+      <button class="mr-2 bg-spring-3 text-gray-800 font-bold p-1 rounded">
         <
       </button>
-      <button v-for="number in pages" class="mr-2 bg-gray-600 text-gray-200 font-bold p-1 rounded">
-        {{ number }}
+      <button v-for="number in pages" class="mr-2 bg-spring-3 text-gray-800 font-bold p-1 rounded">
+        <h1 @click="getPage(number)">{{ number }}</h1>
       </button>
-      <button class="mr-2 bg-gray-600 text-gray-200 font-bold p-1 rounded">
+      <button class="mr-2 bg-spring-3 text-gray-800 font-bold p-1 rounded">
         >
       </button>
     </div>
+    {{ params }}
   </div>
 </template>
 
 <script>
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
+const ApplyingUsersRepository = RepositoryFactory.get('applyingUsers')
 const MeetingsRepository = RepositoryFactory.get('meetings')
 
 export default {
   name: 'List',
   data () {
     return {
-      list: [],
       box: [],
-      pages: 3
+      pages: '',
+      attendees: {}
     }
   },
-  created() {
-    this.fetch()
+  computed: {
+    params() {
+      const store = this.$store
+      let parameters = store.getters.searchParams
+      console.log("실행")
+      this.fetch(parameters)
+    }
   },
   methods: {
-    async fetch() {
-      const { data } = await MeetingsRepository.get();
-      this.list = data;
-      this.putInBox();
+    async fetch(parameters) {
+      const response = await MeetingsRepository.get(parameters)
+        .catch((error) => console.log("에러발생"));
+
+      const data = response.data;
+      const headers = response.headers;
+
+      this.pages = parseInt(headers['totalpages']);
+
+      await this.getAttendees(data)
+      this.putInBox(data);
     },
     goDetail(meetingId) {
       const router = this.$router
@@ -87,11 +99,13 @@ export default {
       store.commit('setMeeting', meetingId);
       router.push({name: 'Detail'});
     },
-    putInBox() {
-      var tray = []
-      var box = this.box
-      var meeting 
-      for(meeting of this.list) {
+    putInBox(data) {
+      this.box = []
+      let tray = []
+      let box = this.box
+      let meeting
+      
+      for(meeting of data) {
         if(tray.length == 4) {
           box.push(tray)
           tray = []
@@ -99,11 +113,35 @@ export default {
         tray.push(meeting)
       }
       box.push(tray)
+    },
+    async getAttendees(meetings) {
+      for(var meeting of meetings) {
+        const { data } = await ApplyingUsersRepository.list(meeting['id'])
+        var key = meeting['id']
+        this.attendees[key] = data.length
+      }      
+    },
+    async getPage(number) {
+      const store = this.$store
+      let parameters = store.getters.searchParams
+
+      store.commit('setPageSearchParams', number);
+
+      const { data } = await MeetingsRepository.get(parameters)
+        .catch((error) => console.log("에러발생"));
+
+      this.putInBox(data);
     }
+
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#meetingContainer {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>

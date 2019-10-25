@@ -2,86 +2,50 @@ package kr.gringrape.hamp.application;
 
 import kr.gringrape.hamp.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 public class MeetingService {
 
     private MeetingRepository meetingRepository;
-
+    private MeetingCriteriaRepository meetingCriteriaRepository;
     private UserRepository userRepository;
 
     @Autowired
     public void setMeetingRepository(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
     }
-
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+    @Autowired
+    public void setMeetingCriteriaRepository(MeetingCriteriaRepository meetingCriteriaRepository) {
+        this.meetingCriteriaRepository = meetingCriteriaRepository;
+    }
 
-    public List<Meeting> getMeetings(
-            Optional<String> address,
-            Optional<Long> topicId,
-            Optional<String> keyword,
-            Optional<LocalDateTime> durationStart,
-            Optional<LocalDateTime> durationEnd
+    public Page getPage(
+            String address,
+            Long topicId,
+            String keyword,
+            LocalDateTime durationStart,
+            LocalDateTime durationEnd,
+            Integer pageNum
     ) {
 
-        List<Meeting> meetings = meetingRepository.findAll();
+        Page page = meetingCriteriaRepository.findByCriteria(
+                address, keyword, topicId, durationStart, durationEnd,
+                PageRequest.of(pageNum - 1, 8));
 
-        List<Meeting> filtered =
-                meetings.stream()
-                        .filter(getAddressPredicate(address))
-                        .filter(getTopicIdPredicate(topicId))
-                        .filter(getKeywordPredicate(keyword))
-                        .filter(getDurationStartPredicate(durationStart))
-                        .filter(getDurationEndPredicate(durationEnd))
-                        .collect(Collectors.toList());
+        return page;
 
-        return filtered;
-
-    }
-
-    private Predicate<? super Meeting> getAddressPredicate(Optional<String> address) {
-        return address.isPresent()
-                ? (meeting) -> meeting.getAddress().contains(address.get())
-                : (meeting) -> true;
-    }
-
-    private Predicate<? super Meeting> getTopicIdPredicate(Optional<Long> topicId) {
-        return topicId.isPresent()
-                ? (meeting) -> meeting.getTopicId()
-                .equals(topicId.get())
-                : (meeting) -> true;
-    }
-
-    private Predicate<? super Meeting> getKeywordPredicate(Optional<String> keyword) {
-        return keyword.isPresent()
-                ? (meeting) -> meeting.getTitle()
-                .contains(keyword.get())
-                : (meeting) -> true;
-    }
-
-    private Predicate<? super Meeting> getDurationStartPredicate(Optional<LocalDateTime> durationStart) {
-        return durationStart.isPresent()
-                ? (meeting) -> meeting.getStartDate()
-                                .isAfter(durationStart.get())
-                : (meeting) -> true;
-    }
-
-    private Predicate<? super Meeting> getDurationEndPredicate(Optional<LocalDateTime> durationEnd) {
-        return durationEnd.isPresent()
-                ? (meeting) -> meeting.getEndDate()
-                .isBefore(durationEnd.get())
-                : (meeting) -> true;
     }
 
     public Meeting getMeeting(Long id) {
@@ -92,9 +56,14 @@ public class MeetingService {
         return meeting;
     }
 
-    public Meeting addMeeting(Meeting resource) {
+    public Meeting addMeeting(Meeting resource, Long writerId) {
 
         resource.initialize();
+
+        User writer = userRepository.findById(writerId)
+                .orElseThrow(() -> new UserNotFoundException(writerId));
+
+        resource.setWriter(writer);
 
         Meeting meeting = meetingRepository.save(resource);
 
@@ -134,7 +103,7 @@ public class MeetingService {
                 meetingRepository.findMeetingById(meetingId)
                         .orElseThrow(() -> new MeetingNotFoundException(meetingId));
 
-        List<User> applyingUsers = userRepository.findAllByAppliedMeetings(meeting);
+        List<User> applyingUsers = meeting.getApplyingUsers();
 
         return applyingUsers;
 

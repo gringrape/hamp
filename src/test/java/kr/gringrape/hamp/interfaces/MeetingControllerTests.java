@@ -3,28 +3,30 @@ package kr.gringrape.hamp.interfaces;
 import kr.gringrape.hamp.application.MeetingService;
 import kr.gringrape.hamp.domain.Meeting;
 import kr.gringrape.hamp.domain.MeetingNotFoundException;
+import kr.gringrape.hamp.domain.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MeetingController.class)
@@ -56,17 +58,21 @@ public class MeetingControllerTests {
 
     @Test
     public void list() throws Exception {
-        given(meetingService.getMeetings(
-                any(), any(), any(), any(), any()
-        ))
-                .willReturn(meetings);
+
+        Page mockPage = mock(Page.class);
+
+        given(meetingService.getPage(
+                any(), any(), any(), any(), any(), any()
+        )).willReturn(mockPage);
+
+        given(mockPage.getTotalPages()).willReturn(1);
 
         mvc.perform(get("/meetings"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"topicId\":1")));
+                .andExpect(header().string("totalPages","1"));
 
-        verify(meetingService).getMeetings(
-                any(), any(), any(), any(), any()
+        verify(meetingService).getPage(
+                any(), any(), any(), any(), any(), any()
         );
     }
 
@@ -94,22 +100,33 @@ public class MeetingControllerTests {
 
     @Test
     public void createWithValidInfo() throws Exception {
+
         Meeting meeting = Meeting.builder()
                     .id(1004L)
                     .topicId(1L)
                     .title("함께 C언어 공부해요~!")
                     .description("초보자도 쉽게 할 수 있어요~!")
+                    .writer(User.builder().id(1004L).build())
                     .build();
 
-        given(meetingService.addMeeting(any()))
+        given(meetingService.addMeeting(any(), any()))
                 .willReturn(meeting);
 
         mvc.perform(post("/meetings")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"topicId\":1,\"title\":\"함께 C언어 공부해요~!\",\"description\":\"초보자도 쉽게 할 수 있어요~!\",\"address\":\"서울시 광진구 구의동 자바개발소\"}"))
-                .andExpect(status().isCreated());
+                .content("{\"topicId\":1,\"title\":\"함께 C언어 공부해요~!\",\"description\":\"초보자도 쉽게 할 수 있어요~!\",\"logitude\":\"100\",\"latitude\":\"100\",\"address\":\"서울시 광진구\"}")
+                .header("Authorization", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzMCwidXNlck5hbWUiOiJraW0ifQ.2uObcw6FRnexVMUmf6xC_aUTn2u3bXwfiJ5USQmpBds"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", "/meetings/1004"));
 
-        verify(meetingService).addMeeting(any());
+        ArgumentCaptor<Meeting> captor = ArgumentCaptor.forClass(Meeting.class);
+
+        verify(meetingService).addMeeting(captor.capture(), any());
+
+        Meeting mockResource = captor.getValue();
+
+        assertThat(meeting.getWriter().getId()).isEqualTo(1004L);
+        assertThat(mockResource.getLatitude()).isEqualTo(100);
     }
 
     @Test

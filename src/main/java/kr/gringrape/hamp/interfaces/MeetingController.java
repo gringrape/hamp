@@ -1,23 +1,21 @@
 package kr.gringrape.hamp.interfaces;
 
+import io.jsonwebtoken.Claims;
 import kr.gringrape.hamp.application.MeetingService;
 import kr.gringrape.hamp.domain.Meeting;
-import kr.gringrape.hamp.interfaces.dto.FilterParameters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -28,21 +26,31 @@ public class MeetingController {
 
     @GetMapping("/meetings")
     public List<Meeting> list(
-            @RequestParam(value = "address", required = false) Optional<String> address,
-            @RequestParam(value = "topicId", required = false) Optional<Long> topicId,
-            @RequestParam(value = "keyword", required = false) Optional<String> keyword,
-            @RequestParam(value = "durationStart", required = false) Optional<LocalDateTime> durationStart,
-            @RequestParam(value = "durationEnd", required = false) Optional<LocalDateTime> durationEnd
+            Meeting resource,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+            HttpServletResponse response
 
     ) {
         // TODO 날짜를 통한 필터링을 할 수 있도록 기간의 시작점과 끝점을 얻어오기
 
-        List<Meeting> meetings = meetingService
-                .getMeetings(
-                        address, topicId, keyword, durationStart, durationEnd
+        Page page = meetingService
+                .getPage(
+                        resource.getAddress(),
+                        resource.getTopicId(),
+                        keyword,
+                        resource.getStartDate(),
+                        resource.getEndDate(),
+                        pageNum
                 );
 
-        return meetings;
+        response.setHeader("totalPages", "" + page.getTotalPages());
+        response.setHeader(
+                "Access-Control-Expose-Headers",
+                "totalPages"
+        );
+
+        return page.getContent();
 
     }
 
@@ -56,10 +64,16 @@ public class MeetingController {
 
     @PostMapping("/meetings")
     public ResponseEntity<?> create(
-            @Valid @RequestBody Meeting resource
+            @Valid @RequestBody Meeting resource,
+            Authentication authentication
     ) throws URISyntaxException {
 
-        Meeting meeting = meetingService.addMeeting(resource);
+        Claims claims = Claims.class
+                .cast(authentication.getPrincipal());
+
+        Long writerId = claims.get("userId", Long.class);
+
+        Meeting meeting = meetingService.addMeeting(resource, writerId);
         URI location = new URI("/meetings/" + meeting.getId());
 
         return ResponseEntity.created(location).body("{}");

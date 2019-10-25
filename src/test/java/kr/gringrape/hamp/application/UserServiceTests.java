@@ -95,30 +95,13 @@ public class UserServiceTests {
     }
 
     @Test
-    public void addUser() {
-
-        String email = "tester@gmail.com";
-        String nick = "tester";
-
-        User mockUser = User.builder()
-                .email(email).nick(nick).id(1L).level(1).build();
-
-        given(userRepository.save(any()))
-                .willReturn(mockUser);
-
-        User user = userService.addUser(email, nick);
-
-        verify(userRepository).save(any());
-
-    }
-
-    @Test
     public void updateUser() {
 
         Long id = 1L;
         Integer level = 1;
         String email = "tester@gmail.com";
         String nick = "tester";
+        String password = "1234";
 
         User mockUser = User.builder()
                 .email(email).nick(nick).id(id).level(level).build();
@@ -132,7 +115,7 @@ public class UserServiceTests {
         given(userRepository.save(any()))
                 .willReturn(updated);
 
-        User user = userService.updateUser(id, email, nick, level);
+        User user = userService.updateUser(id, email, password, nick);
 
         verify(userRepository).findById(eq(id));
 

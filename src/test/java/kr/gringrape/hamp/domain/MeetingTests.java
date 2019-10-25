@@ -10,6 +10,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MeetingTests {
 
     @Test
+    public void creationWithWriter() {
+
+        Meeting meeting = Meeting.builder()
+                .writer(User.builder().id(1004L).build())
+                .build();
+
+        assertThat(meeting.getWriter().getId()).isEqualTo(1004L);
+
+    }
+
+    @Test
     public void addUserNotExisted() {
         Meeting meeting = Meeting.builder().build();
 

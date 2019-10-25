@@ -51,4 +51,20 @@ public class UserController {
         return ResponseEntity.created(new URI(url)).body("{}");
     }
 
+    @PatchMapping("/users/{userId}")
+    public String modify(
+            @PathVariable Long userId,
+            @RequestBody User resource
+    ) {
+
+        User user = userService.updateUser(
+                userId,
+                resource.getEmail(),
+                resource.getPassword(),
+                resource.getNick()
+        );
+
+        return "{}";
+    }
+
 }

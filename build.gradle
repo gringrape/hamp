@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-test'
     implementation 'com.h2database:h2:1.4.199'
     implementation 'org.projectlombok:lombok:1.18.8'
     implementation 'io.jsonwebtoken:jjwt-api:0.10.7'

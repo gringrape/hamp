@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <div class="max-w-xs mx-auto text-center card shadow-md h-auto border-gray-400 border pb-4">
+    <div class="max-w-xs mx-auto bg-white text-center card shadow-md h-auto border-gray-400 border pb-4">
       <h1 class="mt-5 text-gray-900 font-bold text-2xl tracking-wider">
         로그인
       </h1>
@@ -22,8 +22,8 @@
                type="password"
                v-model="userInfo.password">
       </div>
-      <button class="bg-pink-600 rounded py-2 px-10 text-white text-sm w-64
-                     font-bold mt-8 mb-5 hover:bg-pink-400 tracking-widest"
+      <button class=" bg-blue-500 rounded py-2 px-10 text-white text-sm w-64
+                     font-bold mt-8 mb-5 hover:bg-red-500 tracking-widest"
               @click="login">
         로그인
       </button>

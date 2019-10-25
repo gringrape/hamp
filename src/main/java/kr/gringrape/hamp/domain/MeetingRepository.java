@@ -1,19 +1,18 @@
 package kr.gringrape.hamp.domain;
 
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface MeetingRepository extends CrudRepository<Meeting, Long> {
+@Repository
+@Transactional
+public interface MeetingRepository extends CrudRepository<Meeting, Long>, JpaSpecificationExecutor<Meeting> {
 
     List<Meeting> findAll();
-
-    List<Meeting> findAllByAddressContaining(String address);
-
-    List<Meeting> findAllByAddressContainingAndTopicId(String address, Long topicId);
-
-    List<Meeting> findAllByTopicId(Long topicId);
 
     Optional<Meeting> findMeetingById(Long id);
 

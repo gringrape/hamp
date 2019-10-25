@@ -33,25 +33,16 @@ public class UserService {
 
     }
 
-    public User addUser(String email, String nick) {
+    public User updateUser(Long id, String email, String password, String nick) {
 
-        User resource = User.builder().email(email).nick(nick).build();
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
 
-        resource.setLevel(1);
-
-        User user = userRepository.save(resource);
-
-        return user;
-
-    }
-
-    public User updateUser(Long id, String email, String nick, Integer level) {
-
-        User user = userRepository.findById(id).orElse(null);
+        String encoded = passwordEncoder.encode(password);
 
         user.setEmail(email);
         user.setNick(nick);
-        user.setLevel(level);
+        user.setPassword(encoded);
 
         User updated = userRepository.save(user);
 
@@ -61,7 +52,8 @@ public class UserService {
     public User deactivateUser(Long userId) {
 
         // TODO: 검색한 결과가 없을 경우에 예외 처리.
-        User target = userRepository.findById(userId).orElse(null);
+        User target = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
         target.deactivate();
 

@@ -3,31 +3,17 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store/store'
 import Datetime from 'vue-datetime'
-import Vuex from 'vuex'
+import VCalendar from 'v-calendar';
 
-Vue.use(Vuex)
+// Use v-calendar & v-date-picker components
+Vue.use(VCalendar, {
+  componentPrefix: 'vc'    
+});
+
 Vue.use(Datetime)
 Vue.config.productionTip = false
-
-const store = new Vuex.Store({
-  state: {
-    meetingId: null
-  },
-  mutations: {
-    setMeeting(state, id) {
-      state.meetingId = id
-    }
-  },
-  actions: {
-    
-  },
-  getters: {
-    meetingId(state) {
-      return state.meetingId;
-    }
-  }
-})
 
 /* eslint-disable no-new */
 new Vue({

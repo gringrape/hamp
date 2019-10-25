@@ -1,6 +1,7 @@
 package kr.gringrape.hamp.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -33,6 +34,7 @@ public class User {
 
     private Integer level;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "applyingUsers")
     private List<Meeting> appliedMeetings;
 

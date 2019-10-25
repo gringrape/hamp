@@ -6,6 +6,7 @@ import Detail from '@/components/Detail'
 import SignUpForm from '@/components/SignUpForm'
 import LoginForm from '@/components/LoginForm'
 import HostForm from '@/components/HostForm'
+import MyInfo from '@/components/MyInfo'
 
 Vue.use(Router)
 
@@ -37,6 +38,11 @@ export default new Router({
       path: '/host',
       name: 'HostForm',
       component: HostForm
+    },
+    {
+      path: '/myinfo',
+      name: 'MyInfo',
+      component: MyInfo
     }
   ]
 })

@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center">
-    <div class="card shadow-lg w-196 h-auto bg-gray-300 rounded px-6 py-4">
-      <div class="title bg-gray-100 py-4 px-4 rounded">
+    <div class="card shadow-lg w-196 h-auto bg-gray-300 rounded px-6 py-4 border border-gray-400">
+      <div class="title bg-white py-4 px-4 rounded">
         <h1 class="font-extrabold text-gray-900 text-2xl tracking-wider">
           모임 주제:
         </h1>
@@ -15,17 +15,33 @@
       </div>
       <div class="flex">
         <div class="w-full">
-          <div class="location bg-gray-100 py-4 px-4 rounded mt-4">
+          <div class="location bg-white py-4 px-4 rounded mt-4">
             <h1 class="font-extrabold text-gray-900 text-2xl tracking-wider">
               모임 장소:
             </h1>
             <p class="text-gray-600 text-sm mt-1 ">
-              모임의 정확한 위치를 입력해주세요
+              모임의 정확한 위치를 검색해주세요
             </p>
-            <input type="text" v-model="meeting.address" 
-              class="border border-gray-600 rounded text-sm mt-2 py-1 px-1 text-gray-700 w-full"/>
+            <div class="dropdown relative inline-block">
+              <div class="relative flex">
+                <input type="text" v-model="value" 
+                      class="border border-gray-600 rounded text-sm mt-2 py-1 px-1 text-gray-700 w-72"
+                      placeholder="검색어를 입력하세요"/>
+                <button class="absolute right-0 top-12" @click="search(value)">
+                  <i class="material-icons text-gray-700 w-8"> search </i>
+                </button>
+              </div>
+              <div class="dropdown-content w-72" :style="{ display: activeDisplay }">
+                <p v-for="candidate in candidates">
+                  <button class="text-sm text-gray-700 font-bold"
+                          @click="setAddress(candidate)">
+                    {{ candidate.place_name }}
+                  </button>
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="topic bg-gray-100 py-4 px-4 rounded mt-4">
+          <div class="topic bg-white py-4 px-4 rounded mt-4">
             <h1 class="font-extrabold text-gray-900 text-2xl tracking-wider">
               모임 언어:
             </h1>
@@ -44,7 +60,7 @@
             </div>
           </div>
         </div>
-        <div class="date bg-gray-100 py-4 px-4 rounded mt-4 ml-4 w-full">
+        <div class="date bg-white py-4 px-4 rounded mt-4 ml-4 w-full">
           <h1 class="font-extrabold text-gray-900 text-2xl tracking-wider">
             모임 시간:
           </h1>
@@ -55,17 +71,19 @@
             모임 시작 시간
           </h1>
           <datetime type="datetime" v-model="meeting.startDate" 
-            class="border border-gray-600 rounded text-sm mt-1 py-1 px-1 text-gray-700 w-full">
+            class="border border-gray-600 rounded text-sm mt-1 py-1 px-1 text-gray-700 w-full"
+            :input-style="'width:100%;'">
           </datetime>
           <h1 class="mt-4 font-extrabold text-gray-800 text-base tracking-wider">
             모임 종료 시간
           </h1>
           <datetime type="datetime" v-model="meeting.endDate" 
-            class="border border-gray-600 rounded text-sm mt-1 py-1 px-1 text-gray-700 w-full">
+            class="border border-gray-600 rounded text-sm mt-1 py-1 px-1 text-gray-700 w-full"
+            :input-style="'width:100%;'">
           </datetime>
         </div>
       </div>
-      <div class="description bg-gray-100 mt-4 py-4 px-4 rounded">
+      <div class="description bg-white mt-4 py-4 px-4 rounded">
         <h1 class="font-extrabold text-gray-900 text-2xl tracking-wider">
           모임 설명:
         </h1>
@@ -80,7 +98,7 @@
         </textarea>
       </div>
       <div class="flex justify-center">
-        <button class="mt-4 font-extrabold text-white bg-red-600 
+        <button class="mt-4 font-extrabold text-white bg-blue-500
                      rounded w-40 h-16 text-lg tracking-widest
                      hover:bg-white hover:border-red-600 hover:border hover:text-red-600"
                 @click="submit">
@@ -94,25 +112,55 @@
 <script>
 import { RepositoryFactory } from '../repositories/RepositoryFactory'
 const MeetingsRepository = RepositoryFactory.get('meetings')
+import { KakaoRepositoryFactory } from '../kakaoRepositories/RepositoryFactory'
+const KeywordRespository = KakaoRepositoryFactory.get('keyword')
 
 export default {
   name: 'HostForm',
   data() {
     return {
-      meeting: {}
+      meeting: {},
+      value: '',
+      candidates: [],
+      activeDisplay: 'none'
     }
   },
   methods: {
     async submit() {
       const router = this.$router
       const { data } = await MeetingsRepository.createMeeting(this.meeting);
-      
+
       router.push({path: '/'});
+    },
+    async search(arg) {
+      const { data } = await KeywordRespository.get(arg);
+      console.log(data)
+      this.candidates = data.documents;
+      this.activeDisplay = 'block'
+    },
+    setAddress(selected) {
+      const meeting = this.meeting
+
+      meeting.address = selected.address_name
+      this.value = selected.address_name
+      meeting.longitude = selected.x
+      meeting.latitude = selected.y
+
+      console.log(meeting)
+
+      this.activeDisplay = 'none'
     }
   }
 }
 </script>
 
 <style scoped>
-
+.dropdown-content {
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
 </style>
