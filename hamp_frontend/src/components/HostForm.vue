@@ -90,12 +90,10 @@
         <p class="text-gray-600 text-sm mt-1 ">
           모임이 어떻게 진행되는지 설명해주세요
         </p>
-        <textarea 
-          cols="30" rows="10"
-          class="mt-4 w-172 rounded border border-gray-600 focus:outline-none focus:shadow-outline
-                 text-sm text-gray-800 px-2 py-1"
-          v-model="meeting.description">
-        </textarea>
+        <vue-editor id="editor" useCustomImageHandler 
+          @image-added="handleImageAdded" 
+          v-model="meeting.description"> 
+        </vue-editor>
       </div>
       <div class="flex justify-center">
         <button class="mt-4 font-extrabold text-white bg-blue-500
@@ -110,13 +108,18 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
 import { RepositoryFactory } from '../repositories/RepositoryFactory'
-const MeetingsRepository = RepositoryFactory.get('meetings')
 import { KakaoRepositoryFactory } from '../kakaoRepositories/RepositoryFactory'
+
+const MeetingsRepository = RepositoryFactory.get('meetings')
 const KeywordRespository = KakaoRepositoryFactory.get('keyword')
 
 export default {
   name: 'HostForm',
+  components : {
+    VueEditor
+  },
   data() {
     return {
       meeting: {},

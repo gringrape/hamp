@@ -1,24 +1,29 @@
 package kr.gringrape.hamp;
 
-import kr.gringrape.hamp.domain.Meeting;
-import kr.gringrape.hamp.domain.MeetingRepository;
-import kr.gringrape.hamp.domain.User;
-import kr.gringrape.hamp.domain.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+//@SpringBootApplication
+//public class HampApplication {
+//
+//	public static void main(String[] args) {
+//		SpringApplication.run(HampApplication.class, args);
+//	}
+//
+//}
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class HampApplication {
+public class HampApplication extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(HampApplication.class);
+    }
 
-		SpringApplication.run(HampApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(HampApplication.class, args);
+    }
 
-	}
 }

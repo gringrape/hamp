@@ -1,5 +1,13 @@
 # Hamp - 함께 프로그래밍
 
+## *. 개발 일지, 웹페이지 url
+
+개발일지 #1 - https://slite.com/api/s/note/YBGBjiZ8kfXX5eE5NMHLVp/Hamp
+
+개발일지 #2 - https://slite.com/api/s/note/7Ab5t7FMpDpiBkkBB5PHAU/Hamp-2
+
+url - http://hamp.xyz.s3-website.ap-northeast-2.amazonaws.com/
+
 ## 1. 주제 
 - 모여서 함께 **개발 공부**를 할 수 있도록 **중개**하는 사이트.
 

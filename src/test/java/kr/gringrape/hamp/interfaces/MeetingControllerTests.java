@@ -2,7 +2,7 @@ package kr.gringrape.hamp.interfaces;
 
 import kr.gringrape.hamp.application.MeetingService;
 import kr.gringrape.hamp.domain.Meeting;
-import kr.gringrape.hamp.domain.MeetingNotFoundException;
+import kr.gringrape.hamp.application.exceptions.MeetingNotFoundException;
 import kr.gringrape.hamp.domain.User;
 import org.junit.Before;
 import org.junit.Test;

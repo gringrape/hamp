@@ -1,13 +1,28 @@
 spring:
   datasource:
-    url: jdbc:h2:~/data/hamp
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hampdb?useSSL=false&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 1234
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.MySQL5Dialect
 
 ---
 jwt:
   secret: IknowwhatyoudidinlastsummerandwinterYouKnowThat
+
+---
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

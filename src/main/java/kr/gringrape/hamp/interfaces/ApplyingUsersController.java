@@ -3,16 +3,13 @@ package kr.gringrape.hamp.interfaces;
 import io.jsonwebtoken.Claims;
 import kr.gringrape.hamp.application.MeetingService;
 import kr.gringrape.hamp.domain.User;
-import kr.gringrape.hamp.filters.CustomUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin
@@ -40,7 +37,7 @@ public class ApplyingUsersController {
     ) throws URISyntaxException {
 
         Claims claims = Claims.class
-                        .cast(authentication.getPrincipal());
+                .cast(authentication.getPrincipal());
 
         Long userId = claims.get("userId", Long.class);
 

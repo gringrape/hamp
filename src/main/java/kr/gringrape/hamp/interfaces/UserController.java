@@ -2,7 +2,7 @@ package kr.gringrape.hamp.interfaces;
 
 import kr.gringrape.hamp.application.UserService;
 import kr.gringrape.hamp.domain.User;
-import kr.gringrape.hamp.interfaces.dto.UserDto;
+import kr.gringrape.hamp.interfaces.dtos.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

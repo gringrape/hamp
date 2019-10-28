@@ -1,6 +1,11 @@
 package kr.gringrape.hamp.application;
 
+import kr.gringrape.hamp.application.exceptions.UserNotFoundException;
 import kr.gringrape.hamp.domain.*;
+import kr.gringrape.hamp.application.exceptions.MeetingNotFoundException;
+import kr.gringrape.hamp.infrastructure.persistence.MeetingCriteriaRepository;
+import kr.gringrape.hamp.infrastructure.persistence.MeetingRepository;
+import kr.gringrape.hamp.infrastructure.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 @Service
 public class MeetingService {
@@ -22,10 +25,12 @@ public class MeetingService {
     public void setMeetingRepository(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
     }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     @Autowired
     public void setMeetingCriteriaRepository(MeetingCriteriaRepository meetingCriteriaRepository) {
         this.meetingCriteriaRepository = meetingCriteriaRepository;
@@ -71,10 +76,12 @@ public class MeetingService {
     }
 
     public void removeMeeting(Long id) {
+
         meetingRepository.findMeetingById(id)
                 .orElseThrow(() -> new MeetingNotFoundException(id));
 
         meetingRepository.deleteById(id);
+
     }
 
     public Meeting modifyMeeting(Long id, Meeting resource) {

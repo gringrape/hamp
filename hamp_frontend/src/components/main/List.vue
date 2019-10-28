@@ -22,10 +22,10 @@
           class="text-gray-800 font-bold mt-1">
             {{ meeting['title'] }}
         </h2>
-        <p 
-          class="mt-1 text-sm text-gray-900 tracking-wide">
-            {{ meeting['description'] }}
-        </p>
+        <div id="textContainer" class="mt-1 text-sm text-gray-900 tracking-wide h-10">
+          <textContainer :text="meeting['description']" :containerId="`${meeting['id']}`">
+          </textContainer>
+        </div>
         <div 
           class="flex mt-5 justify-between">
           <h4 
@@ -58,12 +58,16 @@
 </template>
 
 <script>
+import textContainer from '../small/textContainer'
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 const ApplyingUsersRepository = RepositoryFactory.get('applyingUsers')
 const MeetingsRepository = RepositoryFactory.get('meetings')
 
 export default {
   name: 'List',
+  components: {
+    textContainer
+  },
   data () {
     return {
       box: [],
@@ -132,7 +136,6 @@ export default {
 
       this.putInBox(data);
     }
-
   }
 }
 </script>

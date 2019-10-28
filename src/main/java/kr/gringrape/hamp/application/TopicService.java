@@ -1,7 +1,7 @@
 package kr.gringrape.hamp.application;
 
 import kr.gringrape.hamp.domain.Topic;
-import kr.gringrape.hamp.domain.TopicRepository;
+import kr.gringrape.hamp.infrastructure.persistence.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

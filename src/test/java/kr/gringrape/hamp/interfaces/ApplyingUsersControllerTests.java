@@ -1,26 +1,16 @@
 package kr.gringrape.hamp.interfaces;
 
-import io.jsonwebtoken.Claims;
-import kr.gringrape.hamp.HampApplication;
 import kr.gringrape.hamp.application.MeetingService;
-import kr.gringrape.hamp.domain.MeetingNotFoundException;
+import kr.gringrape.hamp.application.exceptions.MeetingNotFoundException;
 import kr.gringrape.hamp.domain.User;
-import kr.gringrape.hamp.filters.CustomUser;
-import kr.gringrape.hamp.utils.JwtUtil;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootContextLoader;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 

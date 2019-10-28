@@ -1,10 +1,12 @@
 package kr.gringrape.hamp.application;
 
+import kr.gringrape.hamp.application.exceptions.EmailNotExistedException;
+import kr.gringrape.hamp.application.exceptions.UserExistedException;
+import kr.gringrape.hamp.application.exceptions.UserNotFoundException;
 import kr.gringrape.hamp.domain.User;
-import kr.gringrape.hamp.domain.UserRepository;
-import kr.gringrape.hamp.interfaces.PasswordWrongException;
+import kr.gringrape.hamp.infrastructure.persistence.UserRepository;
+import kr.gringrape.hamp.application.exceptions.PasswordWrongException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +69,7 @@ public class UserService {
 
         Optional<User> existed = userRepository.findByEmail(email);
 
-        if(existed.isPresent()) {
+        if (existed.isPresent()) {
             throw new UserExistedException(email);
         }
 
@@ -90,7 +92,7 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(EmailNotExistedException::new);
 
-        if(!passwordEncoder
+        if (!passwordEncoder
                 .matches(password, user.getPassword())) {
             throw new PasswordWrongException("password doesn't match");
         }

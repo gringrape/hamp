@@ -1,11 +1,10 @@
 package kr.gringrape.hamp.application;
 
 import kr.gringrape.hamp.domain.Topic;
-import kr.gringrape.hamp.domain.TopicRepository;
+import kr.gringrape.hamp.infrastructure.persistence.TopicRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;

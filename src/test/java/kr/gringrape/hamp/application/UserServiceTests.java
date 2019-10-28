@@ -1,8 +1,11 @@
 package kr.gringrape.hamp.application;
 
+import kr.gringrape.hamp.application.exceptions.EmailNotExistedException;
+import kr.gringrape.hamp.application.exceptions.UserExistedException;
+import kr.gringrape.hamp.application.exceptions.UserNotFoundException;
 import kr.gringrape.hamp.domain.User;
-import kr.gringrape.hamp.domain.UserRepository;
-import kr.gringrape.hamp.interfaces.PasswordWrongException;
+import kr.gringrape.hamp.infrastructure.persistence.UserRepository;
+import kr.gringrape.hamp.application.exceptions.PasswordWrongException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

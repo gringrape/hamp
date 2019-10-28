@@ -1,13 +1,17 @@
 package kr.gringrape.hamp.application;
 
+import kr.gringrape.hamp.application.exceptions.UserNotFoundException;
 import kr.gringrape.hamp.domain.*;
+import kr.gringrape.hamp.application.exceptions.MeetingNotFoundException;
+import kr.gringrape.hamp.infrastructure.persistence.MeetingCriteriaRepository;
+import kr.gringrape.hamp.infrastructure.persistence.MeetingRepository;
+import kr.gringrape.hamp.infrastructure.persistence.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

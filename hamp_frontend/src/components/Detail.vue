@@ -12,9 +12,9 @@
     </div>
     <div id="detail_description" class="mx-auto mt-5">
       <h1 class="text-gray-900 font-bold text-lg">모임 설명</h1>
-      <p class="mt-5 text-gray-900">
-        {{ meeting['description'] }}
-      </p>
+      <div id="textContainer" class="mt-5 text-gray-900">
+
+      </div>
     </div>
     <div id="detail_access" class="mx-auto mt-5">
       <h1 class="text-gray-900 font-bold text-lg" >세부 사항
@@ -127,6 +127,7 @@ export default {
       console.log(this.meeting)
       this.getAttendees();
       this.setDate();
+      this.setText();
     },
     async getAttendees() {
       const { data } = await ApplyingUsersRepository.list(this.meetingId);
@@ -161,6 +162,10 @@ export default {
 
         marker.setMap(map);
       });
+    },
+    setText() {
+      let element = document.getElementById('textContainer');
+      element.innerHTML = this.meeting.description;
     },
     setDate() {
       let start = this.meeting.startDate
