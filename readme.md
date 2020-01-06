@@ -1,4 +1,6 @@
 # Hamp - 함께 프로그래밍
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fgringrape%2Fhamp.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fgringrape%2Fhamp?ref=badge_shield)
+
 
 ## *. 개발 일지, 웹페이지 url
 
@@ -59,3 +61,6 @@ url - http://hamp.xyz.s3-website.ap-northeast-2.amazonaws.com/
 
 ## 5. 프로젝트 진행 계획
 - 프로토 타입 개발 -> 배포 -> 요구사항 추가 -> 개발 목표 추가 -> 다음 버젼 개발 -> 배포 -> ...
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fgringrape%2Fhamp.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fgringrape%2Fhamp?ref=badge_large)
